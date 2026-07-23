@@ -2146,7 +2146,17 @@
     var nextBtn = card.querySelector('.btn-primary:not(.btn-submit)');
     if (nextBtn) nextBtn.textContent = activeIndex < fields.length - 1 ? 'Следующий вопрос →' : 'Дальше 🚀';
     var backBtn = card.querySelector('.btn-secondary');
-    if (backBtn) backBtn.textContent = activeIndex > 0 ? '← Вопрос' : '← Раздел';
+    if (backBtn) {
+      if (activeIndex > 0) {
+        backBtn.textContent = '← Вопрос';
+        backBtn.style.display = '';
+      } else if (currentIdx === 1) {
+        backBtn.style.display = 'none';
+      } else {
+        backBtn.textContent = '← Раздел';
+        backBtn.style.display = '';
+      }
+    }
     requestAnimationFrame(function() { fitActiveScreen(card); });
   }
 
