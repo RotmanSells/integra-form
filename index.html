@@ -1,0 +1,2493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>INTEGRA — Легализация в Армении</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :root {
+    --primary: #667eea;
+    --primary-dark: #5a6fd6;
+    --secondary: #764ba2;
+    --accent: #f093fb;
+    --success: #48bb78;
+    --success-dark: #38a169;
+    --warning: #ed8936;
+    --danger: #f56565;
+    --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    --card-bg: rgba(255, 255, 255, 0.97);
+    --card-shadow: 0 25px 80px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.15);
+    --radius: 24px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--bg-gradient);
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    color: #2d3748;
+    overflow: hidden;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(102,126,234,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(118,75,162,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(240,147,251,0.1) 0%, transparent 50%);
+    animation: bgPulse 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes bgPulse {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .particles {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    animation: floatParticle linear infinite;
+  }
+
+  @keyframes floatParticle {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+  }
+
+  .app {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    padding: clamp(4px, 1.2vh, 12px);
+    padding-top: max(clamp(4px, 1.2vh, 12px), var(--safe-top));
+    padding-bottom: max(clamp(4px, 1.2vh, 12px), var(--safe-bottom));
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(4px, 1vh, 10px);
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .progress-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(26, 26, 46, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: clamp(6px, 1vh, 10px) clamp(8px, 1.5vw, 12px);
+    padding-top: max(clamp(6px, 1vh, 10px), var(--safe-top));
+    margin: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .progress-wrap.hidden-progress {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: clamp(4px, 0.6vh, 7px);
+  }
+
+  .progress-text {
+    color: white;
+    font-size: clamp(10px, 1.5vh, 12px);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .progress-milestone {
+    color: rgba(255,255,255,0.85);
+    font-size: clamp(9px, 1.3vh, 11px);
+    font-weight: 500;
+  }
+
+  .progress-bar {
+    height: clamp(3px, 0.5vh, 5px);
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #f093fb, #ffd700);
+    background-size: 200% 100%;
+    border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0%;
+    animation: gradientShift 3s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .step-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    transition: all 0.3s;
+  }
+
+  .step-dot.active {
+    background: #ffd700;
+    transform: scale(1.3);
+    box-shadow: 0 0 8px rgba(255,215,0,0.5);
+  }
+
+  .step-dot.done {
+    background: var(--success);
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: clamp(8px, 2vh, 20px) clamp(8px, 2.5vw, 20px);
+    box-shadow: var(--card-shadow);
+    animation: cardEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin: 0;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    isolation: isolate;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+
+  @keyframes cardEnter {
+    from { opacity: 0; transform: translateY(30px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .card.hidden { display: none; }
+
+  .block-icon {
+    font-size: clamp(28px, 5vh, 48px);
+    text-align: center;
+    margin-bottom: clamp(4px, 0.8vh, 10px);
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));
+    animation: iconBounce 2.5s ease-in-out infinite;
+  }
+
+  @keyframes iconBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.05); }
+  }
+
+  .block-title {
+    font-size: clamp(17px, 3.2vh, 24px);
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: clamp(2px, 0.5vh, 6px);
+    line-height: 1.2;
+  }
+
+  .block-subtitle {
+    text-align: center;
+    font-size: clamp(10px, 1.6vh, 13px);
+    color: #718096;
+    margin-bottom: clamp(6px, 1.2vh, 14px);
+    line-height: 1.5;
+  }
+
+  .micro-praise {
+    background: linear-gradient(135deg, rgba(72,187,120,0.08), rgba(56,161,105,0.08));
+    border-left: 4px solid var(--success);
+    padding: clamp(5px, 0.8vh, 9px) clamp(8px, 1.5vw, 12px);
+    border-radius: 0 12px 12px 0;
+    margin-bottom: clamp(5px, 0.8vh, 10px);
+    font-size: clamp(10px, 1.4vh, 12px);
+    color: #22543d;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: praiseIn 0.5s ease;
+  }
+
+  @keyframes praiseIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .field { margin-bottom: clamp(6px, 1vh, 12px); }
+
+  .field-label {
+    display: flex;
+    align-items: flex-start;
+    font-size: clamp(11px, 1.8vh, 14px);
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: clamp(4px, 0.8vh, 8px);
+    line-height: 1.3;
+    gap: 8px;
+  }
+
+  .field-label .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px; height: 24px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .field input[type="text"],
+  .field input[type="date"],
+  .field input[type="tel"],
+  .field input[type="email"],
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: clamp(8px, 1.4vh, 12px) clamp(10px, 1.8vw, 14px);
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: clamp(13px, 1.8vh, 15px);
+    font-family: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #f8fafc;
+    color: #2d3748;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(102,126,234,0.12), 0 4px 12px rgba(102,126,234,0.1);
+    transform: translateY(-1px);
+  }
+
+  .field textarea { resize: vertical; min-height: 80px; }
+
+  .field-hint {
+    font-size: clamp(9px, 1.3vh, 11px);
+    color: #718096;
+    margin-top: clamp(3px, 0.5vh, 5px);
+    font-style: italic;
+  }
+
+  .options { display: flex; flex-direction: column; gap: clamp(4px, 0.8vh, 8px); }
+
+  .option {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0; height: 0;
+  }
+
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    padding: clamp(7px, 1.3vh, 11px) clamp(8px, 1.5vw, 12px);
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    background: #f8fafc;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: clamp(10px, 1.6vh, 13px);
+    line-height: 1.35;
+    color: #4a5568;
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(34px, 6vh, 44px);
+  }
+
+  .option-label::before {
+    content: '';
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border: 2px solid #cbd5e0;
+    margin-right: 12px;
+    margin-top: 1px;
+    transition: all 0.25s;
+    background: white;
+    border-radius: 6px;
+  }
+
+  .option input[type="radio"] + .option-label::before { border-radius: 50%; }
+
+  .option input:checked + .option-label {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(102,126,234,0.06), rgba(118,75,162,0.06));
+    color: #2d3748;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(102,126,234,0.12);
+    transform: scale(1.01);
+  }
+
+  .option input:checked + .option-label::before {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
+  }
+
+  .option input[type="checkbox"]:checked + .option-label::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-size: 14px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .option input[type="radio"]:checked + .option-label::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='5' fill='white'/%3E%3C/svg%3E");
+    background-size: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .option:active .option-label { transform: scale(0.98); }
+
+  .quick-buttons { display: flex; flex-wrap: wrap; gap: clamp(4px, 0.7vh, 7px); margin-top: clamp(3px, 0.5vh, 6px); }
+
+  .quick-btn {
+    padding: clamp(6px, 1vh, 10px) clamp(8px, 1.5vw, 12px);
+    border: 2px solid #e2e8f0;
+    border-radius: 22px;
+    background: white;
+    font-size: clamp(10px, 1.5vh, 12px);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #4a5568;
+    font-family: inherit;
+    min-height: clamp(30px, 5vh, 38px);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .quick-btn:active { transform: scale(0.93); }
+
+  .quick-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 16px rgba(102,126,234,0.35);
+    transform: scale(1.03);
+  }
+
+  .hint {
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border-left: 4px solid #f59e0b;
+    padding: clamp(6px, 1vh, 10px) clamp(8px, 1.5vw, 12px);
+    border-radius: 0 12px 12px 0;
+    font-size: clamp(10px, 1.5vh, 12px);
+    color: #78350f;
+    margin-bottom: clamp(6px, 1vh, 12px);
+    line-height: 1.5;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .hint-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  .info-box {
+    background: linear-gradient(135deg, rgba(102,126,234,0.06), rgba(118,75,162,0.06));
+    border: 2px solid rgba(102,126,234,0.15);
+    padding: clamp(6px, 1vh, 10px) clamp(8px, 1.5vw, 12px);
+    border-radius: 14px;
+    font-size: clamp(10px, 1.5vh, 12px);
+    color: #4a5568;
+    margin-bottom: clamp(6px, 1vh, 12px);
+    line-height: 1.5;
+  }
+
+  .btn-row { display: flex; gap: clamp(6px, 1vh, 10px); margin-top: clamp(6px, 1.2vh, 16px); flex-shrink: 0; }
+
+  .btn {
+    flex: 1;
+    padding: clamp(8px, 1.5vh, 14px) clamp(10px, 2vw, 18px);
+    border: none;
+    border-radius: 16px;
+    font-size: clamp(11px, 1.8vh, 14px);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(38px, 6.5vh, 48px);
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s, opacity 0.5s;
+    opacity: 0;
+  }
+
+  .btn:active::after {
+    width: 300px; height: 300px;
+    opacity: 1;
+    transition: 0s;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: 0 8px 24px rgba(102,126,234,0.35);
+  }
+
+  .btn-primary:active {
+    transform: translateY(2px) scale(0.98);
+    box-shadow: 0 4px 12px rgba(102,126,234,0.35);
+  }
+
+  .btn-secondary {
+    background: #f7fafc;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+  }
+
+  .btn-secondary:active { background: #edf2f7; transform: scale(0.98); }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    box-shadow: 0 8px 24px rgba(245,87,108,0.35);
+    font-size: clamp(12px, 1.9vh, 15px);
+    padding: clamp(10px, 1.8vh, 16px);
+  }
+
+  .btn-submit:active { transform: translateY(2px) scale(0.98); }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .welcome-logo {
+    text-align: center;
+    font-size: clamp(40px, 10vh, 72px);
+    margin-bottom: clamp(4px, 0.8vh, 12px);
+    animation: welcomeFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes welcomeFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(3deg); }
+    66% { transform: translateY(-5px) rotate(-2deg); }
+  }
+
+  .welcome-title {
+    font-size: clamp(20px, 3.8vh, 28px);
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: clamp(4px, 0.8vh, 10px);
+    line-height: 1.2;
+  }
+
+  .welcome-text {
+    text-align: center;
+    color: #4a5568;
+    font-size: clamp(10px, 1.6vh, 14px);
+    line-height: 1.5;
+    margin-bottom: clamp(6px, 1.2vh, 16px);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(6px, 1vh, 10px);
+    margin: clamp(6px, 1.2vh, 16px) 0;
+  }
+
+  .feature {
+    background: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(118,75,162,0.08));
+    padding: clamp(6px, 1.2vh, 14px) clamp(6px, 1.5vw, 12px);
+    border-radius: 16px;
+    text-align: center;
+    font-size: clamp(9px, 1.4vh, 12px);
+    color: #4a5568;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid rgba(102,126,234,0.1);
+  }
+
+  .feature:active {
+    transform: scale(0.94);
+    background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.15));
+  }
+
+  .feature-icon { font-size: clamp(16px, 3vh, 26px); margin-bottom: 2px; display: block; }
+
+  .feature small { font-size: clamp(8px, 1.2vh, 11px); }
+
+  .preview-plan {
+    background: linear-gradient(135deg, rgba(72,187,120,0.06), rgba(56,161,105,0.06));
+    border: 2px solid rgba(72,187,120,0.25);
+    border-radius: 16px;
+    padding: clamp(8px, 1.4vh, 14px);
+    margin: clamp(6px, 1vh, 12px) 0;
+  }
+
+  .preview-title {
+    font-size: clamp(12px, 1.8vh, 14px);
+    font-weight: 700;
+    color: #22543d;
+    margin-bottom: clamp(6px, 1vh, 10px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .preview-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: clamp(4px, 0.6vh, 7px) 0;
+    font-size: clamp(10px, 1.5vh, 13px);
+    color: #276749;
+    border-bottom: 1px solid rgba(72,187,120,0.15);
+    animation: previewIn 0.3s ease;
+  }
+
+  @keyframes previewIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .preview-item:last-child { border-bottom: none; }
+  .preview-check { color: var(--success); font-size: 16px; font-weight: 700; }
+
+  .success-icon {
+    text-align: center;
+    font-size: clamp(40px, 10vh, 72px);
+    margin-bottom: clamp(6px, 1vh, 14px);
+    animation: successPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes successPop {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .success-title {
+    font-size: clamp(18px, 3.4vh, 24px);
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(135deg, var(--success), var(--success-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: clamp(4px, 0.8vh, 10px);
+  }
+
+  .success-text {
+    text-align: center;
+    color: #4a5568;
+    font-size: clamp(10px, 1.6vh, 14px);
+    line-height: 1.5;
+    margin-bottom: clamp(8px, 1.4vh, 18px);
+  }
+
+  .contact-buttons { display: flex; flex-direction: column; gap: clamp(6px, 1vh, 10px); margin: clamp(8px, 1.4vh, 16px) 0; }
+
+  .contact-btn {
+    padding: clamp(8px, 1.5vh, 14px);
+    border-radius: 16px;
+    font-size: clamp(11px, 1.7vh, 14px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    text-decoration: none;
+    color: white;
+    min-height: clamp(36px, 6vh, 48px);
+  }
+
+  .contact-btn.telegram {
+    background: linear-gradient(135deg, #0088cc, #00aced);
+    box-shadow: 0 6px 20px rgba(0,136,204,0.3);
+  }
+
+  .contact-btn.whatsapp {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    box-shadow: 0 6px 20px rgba(37,211,102,0.3);
+  }
+
+  .contact-btn:active { transform: translateY(2px) scale(0.98); }
+
+  .signature-box {
+    border: 2px dashed #cbd5e0;
+    border-radius: 14px;
+    padding: clamp(8px, 1.4vh, 14px);
+    text-align: center;
+    background: #f8fafc;
+    color: #718096;
+    font-size: clamp(10px, 1.5vh, 13px);
+    margin-bottom: clamp(4px, 0.6vh, 8px);
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: clamp(36px, 6vh, 48px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .signature-box:active { background: #edf2f7; transform: scale(0.98); }
+
+  .signature-box.signed {
+    border-style: solid;
+    border-color: var(--success);
+    background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+    color: #22543d;
+    font-weight: 600;
+    animation: signedPulse 0.5s;
+  }
+
+  @keyframes signedPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
+
+  .sub-field {
+    margin-top: 12px;
+    display: none;
+    animation: subFieldIn 0.35s ease;
+  }
+
+  @keyframes subFieldIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .sub-field.visible { display: block; }
+
+  .priority-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+
+  .priority-tag {
+    padding: clamp(6px, 1vh, 10px) clamp(8px, 1.5vw, 12px);
+    border: 2px solid #e2e8f0;
+    border-radius: 22px;
+    background: white;
+    font-size: clamp(10px, 1.4vh, 12px);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    font-family: inherit;
+    color: #4a5568;
+    min-height: clamp(30px, 5vh, 38px);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .priority-tag:active { transform: scale(0.93); }
+
+  .priority-tag.selected {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 16px rgba(102,126,234,0.3);
+    transform: scale(1.04);
+  }
+
+  .priority-tag .tag-emoji { margin-right: 5px; }
+
+  .toast {
+    position: fixed;
+    top: max(18px, var(--safe-top));
+    right: 18px;
+    width: min(360px, calc(100vw - 28px));
+    transform: translateX(calc(100% + 30px)) scale(.94);
+    background: linear-gradient(135deg, rgba(255,255,255,.97), rgba(247,249,255,.95));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: #2d3748;
+    padding: 13px 15px 15px;
+    border: 1px solid rgba(255,255,255,.75);
+    border-radius: 19px;
+    z-index: 9999;
+    opacity: 0;
+    transition: transform .42s cubic-bezier(.2,.9,.2,1.15), opacity .25s;
+    box-shadow: 0 18px 55px rgba(20,24,55,.24), 0 5px 16px rgba(102,126,234,.12);
+    text-align: left;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .toast.show {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+
+  .toast-inner {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    align-items: center;
+    gap: 11px;
+  }
+
+  .toast-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #667eea, #9f7aea);
+    box-shadow: 0 7px 18px rgba(102,126,234,.28);
+    font-size: 21px;
+  }
+
+  .toast-title {
+    margin-bottom: 2px;
+    color: #323b55;
+    font-size: 13px;
+    font-weight: 850;
+  }
+
+  .toast-message {
+    color: #667085;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .toast-meter {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: rgba(102,126,234,.10);
+  }
+
+  .toast-meter::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #f093fb, #ffd166);
+    transform-origin: left;
+    animation: toastCountdown 3.8s linear forwards;
+  }
+
+  .toast.motivation .toast-icon {
+    background: linear-gradient(135deg, #ff9a44, #fc6076);
+    box-shadow: 0 7px 18px rgba(252,96,118,.25);
+  }
+
+  .toast.success .toast-icon {
+    background: linear-gradient(135deg, #38b2ac, #48bb78);
+    box-shadow: 0 7px 18px rgba(72,187,120,.25);
+  }
+
+  .toast.warning .toast-icon {
+    background: linear-gradient(135deg, #f6ad55, #ed8936);
+    box-shadow: 0 7px 18px rgba(237,137,54,.25);
+  }
+
+  @keyframes toastCountdown {
+    to { transform: scaleX(0); }
+  }
+
+  .confetti-container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 9998;
+    overflow: hidden;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 10px; height: 10px;
+    top: -20px;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  ::-webkit-scrollbar { width: 0; height: 0; }
+
+  @media (max-width: 360px) {
+    .card { padding: 22px 14px; }
+    .option-label { padding: 12px 14px; font-size: 13px; }
+    .quick-btn { padding: 10px 13px; font-size: 12px; }
+    .priority-tag { padding: 10px 12px; font-size: 12px; }
+  }
+
+  @media (max-width: 480px) and (max-height: 500px) {
+    .app { padding: 10px 20px; }
+    .card { padding: 20px 18px; }
+    .block-icon { font-size: 36px; margin-bottom: 8px; }
+    .welcome-logo { font-size: 48px; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(102,126,234,0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(102,126,234,0); }
+  }
+
+  .pulse { animation: pulse 2s infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 15% 15%, rgba(240,147,251,0.22), transparent 26%),
+      radial-gradient(circle at 85% 78%, rgba(102,126,234,0.24), transparent 30%),
+      var(--bg-gradient);
+  }
+
+  .app {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    padding: clamp(4px, 1.2vh, 12px);
+    padding-top: max(clamp(4px, 1.2vh, 12px), var(--safe-top));
+    padding-bottom: max(clamp(4px, 1.2vh, 12px), var(--safe-bottom));
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(4px, 1vh, 10px);
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .progress-wrap {
+    position: relative;
+    top: auto;
+    margin: 0;
+    padding: 9px 13px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    background: rgba(15, 20, 49, 0.62);
+    box-shadow: 0 12px 38px rgba(0,0,0,0.17);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+
+  .progress-wrap.hidden-progress {
+    display: none;
+  }
+
+  .progress-header { margin-bottom: 7px; }
+  .progress-bar { height: 5px; }
+  .step-dots { display: none; }
+
+  .card {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: clamp(8px, 2vh, 20px) clamp(8px, 2.5vw, 20px);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: clamp(14px, 2.5vw, 24px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    isolation: isolate;
+    box-sizing: border-box;
+  }
+
+  .card-inner {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card > .block-icon {
+    font-size: clamp(30px, 6vh, 48px);
+    margin-bottom: clamp(4px, 1vh, 10px);
+  }
+
+  .card .block-icon {
+    font-size: clamp(30px, 6vh, 48px);
+    margin-bottom: clamp(4px, 1vh, 10px);
+  }
+
+  .block-title {
+    font-size: clamp(19px, 3.4vh, 25px);
+    margin-bottom: 3px;
+  }
+
+  .block-subtitle {
+    font-size: clamp(11px, 1.8vh, 14px);
+    margin-bottom: clamp(8px, 1.7vh, 15px);
+  }
+
+  .question-hud {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: clamp(8px, 1.6vh, 14px);
+  }
+
+  .question-count {
+    color: #5a67d8;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .question-streak {
+    padding: 5px 9px;
+    border-radius: 999px;
+    color: #744210;
+    background: linear-gradient(135deg, #fff7d6, #ffeaa1);
+    font-size: 11px;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(237,137,54,.13);
+  }
+
+  .encouragement-text {
+    width: 100%;
+    min-height: 19px;
+    color: #5b6478;
+    font-size: clamp(11px, 1.7vh, 13px);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .encouragement-text.message-in {
+    animation: messageIn .32s ease;
+  }
+
+  @keyframes messageIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card .field {
+    display: none;
+    min-height: 0;
+    margin: 0;
+    animation: questionIn .38s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .card .field.active-question { display: block; }
+
+  @keyframes questionIn {
+    from { opacity: 0; transform: translateX(24px) scale(.98); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+  }
+
+  .card .micro-praise,
+  .card .hint,
+  .card .info-box,
+  .card .preview-plan,
+  .card > .hint,
+  .card > .info-box,
+  .card > .preview-plan {
+    display: none;
+  }
+
+  .field-label {
+    font-size: clamp(13px, 2.2vh, 16px);
+    margin-bottom: clamp(7px, 1.3vh, 11px);
+  }
+
+  .field-label .num {
+    min-width: 23px;
+    height: 23px;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(6px, 1.2vh, 10px);
+  }
+
+  .option-label {
+    height: 100%;
+    min-height: clamp(42px, 7.5vh, 58px);
+    padding: clamp(9px, 1.7vh, 13px) clamp(10px, 2vw, 15px);
+    align-items: center;
+    font-size: clamp(11px, 1.85vh, 14px);
+    line-height: 1.28;
+  }
+
+  .option-label::before {
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+    margin-right: 9px;
+  }
+
+  .field input[type="text"],
+  .field input[type="date"],
+  .field input[type="tel"],
+  .field input[type="email"],
+  .field textarea,
+  .field select {
+    padding: clamp(11px, 2vh, 14px) 15px;
+  }
+
+  .sub-field.visible { margin-top: 8px; }
+  .quick-buttons, .priority-tags { gap: 7px; margin-top: 5px; }
+  .quick-btn, .priority-tag { min-height: 40px; padding: 8px 12px; }
+
+  .btn-row {
+    margin-top: clamp(10px, 2vh, 18px);
+    flex-shrink: 0;
+  }
+
+  .btn {
+    min-height: clamp(44px, 7vh, 52px);
+    padding: 11px 16px;
+  }
+
+  .welcome-logo {
+    font-size: clamp(48px, 12vh, 78px);
+    margin-bottom: clamp(5px, 1vh, 12px);
+  }
+
+  .welcome-title { font-size: clamp(23px, 4.4vh, 31px); margin-bottom: 7px; }
+  .welcome-text { font-size: clamp(12px, 2vh, 15px); line-height: 1.45; margin-bottom: clamp(10px, 2vh, 18px); }
+  .features { margin: clamp(8px, 1.8vh, 17px) 0; gap: clamp(7px, 1.2vh, 11px); }
+  .feature { padding: clamp(8px, 1.5vh, 13px) 8px; font-size: clamp(10px, 1.7vh, 13px); }
+  .feature-icon { font-size: clamp(20px, 3.8vh, 28px); margin-bottom: 3px; }
+  #screen-welcome > .info-box { display: block; margin-bottom: 0; padding: clamp(9px, 1.5vh, 13px); font-size: clamp(10px, 1.6vh, 12px); line-height: 1.45; }
+
+  .success-icon { font-size: clamp(54px, 12vh, 88px); margin-bottom: 10px; }
+  .success-title { font-size: clamp(22px, 4vh, 28px); }
+  .success-text { font-size: clamp(12px, 2vh, 15px); margin-bottom: 12px; }
+  #screen-success > .info-box { display: block; margin-bottom: 8px; padding: 11px 14px; }
+  .contact-buttons { flex-direction: row; margin: 8px 0; }
+
+  .card.dense-question .options { gap: 5px; }
+  .card.dense-question .option-label {
+    min-height: 36px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 560px) {
+    .app { padding: clamp(4px, 1vh, 8px); padding-top: max(clamp(4px, 1vh, 8px), var(--safe-top)); padding-bottom: max(clamp(4px, 1vh, 8px), var(--safe-bottom)); }
+    .options { grid-template-columns: 1fr; }
+    .option-label { min-height: clamp(39px, 6.6vh, 50px); }
+    .contact-buttons { flex-direction: column; gap: 7px; }
+    .contact-btn { min-height: 44px; padding: 10px; }
+    .btn-row { flex-direction: row; gap: 8px; }
+    .btn { width: auto; }
+    .toast {
+      top: auto;
+      right: 50%;
+      bottom: max(12px, var(--safe-bottom));
+      transform: translate(50%, calc(100% + 28px)) scale(.96);
+    }
+    .toast.show { transform: translate(50%, 0) scale(1); }
+  }
+
+  @media (max-width: 430px) and (max-height: 740px) {
+    .app {
+      padding: 6px;
+      padding-top: max(6px, var(--safe-top));
+      padding-bottom: max(6px, var(--safe-bottom));
+      gap: 5px;
+    }
+
+    .progress-wrap {
+      padding: 7px 10px;
+      border-radius: 14px;
+    }
+
+    .progress-header {
+      margin-bottom: 5px;
+    }
+
+    .progress-text,
+    .progress-milestone {
+      font-size: 12px;
+    }
+
+    .card {
+      padding: 10px 12px;
+      justify-content: flex-start;
+    }
+
+    .card > .block-icon {
+      display: none;
+    }
+
+    .block-title {
+      padding-left: 0;
+      text-align: left;
+      font-size: 20px;
+      line-height: 1.12;
+    }
+
+    .block-subtitle {
+      display: none;
+    }
+
+    .question-hud {
+      margin: 7px 0 6px;
+      gap: 4px 8px;
+    }
+
+    .question-count,
+    .question-streak {
+      font-size: 10px;
+    }
+
+    .question-streak {
+      padding: 3px 7px;
+    }
+
+    .encouragement-text {
+      min-height: 15px;
+      font-size: 10px;
+    }
+
+    .field-label {
+      margin-bottom: 6px;
+      font-size: 14px;
+      line-height: 1.22;
+    }
+
+    .field-label .num {
+      min-width: 20px;
+      height: 20px;
+      font-size: 10px;
+    }
+
+    .options {
+      gap: 6px;
+    }
+
+    .option-label {
+      min-height: 40px;
+      padding: 7px 9px;
+      font-size: 12.5px;
+      line-height: 1.22;
+      border-radius: 12px;
+    }
+
+    .option-label::before {
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+    }
+
+    .card.dense-question .option-label {
+      min-height: 36px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      font-size: 12px;
+    }
+
+    .quick-btn,
+    .priority-tag {
+      min-height: 36px;
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    .btn-row {
+      margin-top: 7px;
+      gap: 7px;
+    }
+
+    .btn {
+      min-height: 43px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.15;
+    }
+  }
+
+  @media (max-width: 390px) and (max-height: 680px) {
+    .progress-wrap {
+      padding: 6px 9px;
+    }
+
+    .progress-header {
+      margin-bottom: 4px;
+    }
+
+    .card {
+      padding: 8px 10px;
+    }
+
+    .block-title {
+      font-size: 18px;
+    }
+
+    .question-hud {
+      margin: 5px 0;
+    }
+
+    .option-label {
+      min-height: 37px;
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+
+    .card.dense-question .option-label {
+      min-height: 33px;
+      font-size: 11.5px;
+    }
+
+    .btn {
+      min-height: 40px;
+      font-size: 13px;
+    }
+  }
+
+  @media (max-height: 640px) {
+    .card { justify-content: flex-start; }
+    .card > .block-icon { position: absolute; top: 14px; left: 16px; font-size: 25px; margin: 0; }
+    .block-title { padding-left: 36px; text-align: left; }
+    .block-subtitle { padding-left: 36px; text-align: left; margin-bottom: 7px; }
+    .question-hud { margin-bottom: 6px; }
+    .option-label { min-height: 38px; padding-top: 7px; padding-bottom: 7px; }
+    #screen-welcome > .info-box { display: none; }
+    .features { margin: 6px 0; }
+  }
+
+  @media (max-height: 520px) {
+    .card { padding-top: 8px; padding-bottom: 8px; }
+    .block-subtitle { display: none; }
+    .question-hud { margin: 3px 0 5px; gap: 4px 8px; }
+    .question-streak { padding: 3px 7px; }
+    .encouragement-text { min-height: 15px; font-size: 10px; }
+    .field-label { margin-bottom: 5px; line-height: 1.2; }
+    .card.dense-question .option-label { min-height: 29px; padding-top: 4px; padding-bottom: 4px; }
+    .card.dense-question .option-label::before { width: 17px; height: 17px; }
+    .btn { min-height: 38px; padding-top: 7px; padding-bottom: 7px; }
+  }
+
+  @media (max-height: 430px) and (orientation: landscape) {
+    .app { width: 100%; max-width: 100%; grid-template-columns: 170px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+    .progress-wrap { display: flex; flex-direction: column; justify-content: center; }
+    .progress-header { flex-direction: column; align-items: flex-start; gap: 5px; }
+    .card { padding: 10px 16px; }
+    .card > .block-icon { display: none; }
+    .block-title, .block-subtitle { padding-left: 0; }
+    .options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .option-label { min-height: 34px; }
+    .btn { min-height: 38px; padding: 7px 12px; }
+    .btn-row { margin-top: 7px; }
+    .welcome-logo { font-size: 36px; }
+    .welcome-text { margin-bottom: 5px; }
+    .features { grid-template-columns: repeat(4, 1fr); }
+    .feature { padding: 5px; }
+    .feature-icon { font-size: 18px; }
+  }
+
+  .card.fit-tight {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    justify-content: flex-start;
+  }
+
+  .card.fit-tight > .block-icon,
+  .card.fit-tight .block-icon,
+  .card.fit-tight .block-subtitle,
+  .card.fit-tight .encouragement-text {
+    min-height: 15px;
+    font-size: 10px;
+  }
+
+  .card.fit-tight .question-hud {
+    margin: 4px 0 5px;
+  }
+
+  .card.fit-tight .option-label {
+    min-height: 36px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 12px;
+    line-height: 1.18;
+  }
+
+  .card.fit-tight .btn {
+    min-height: 40px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+
+  .card.fit-ultra {
+    padding: 6px 9px;
+  }
+
+  .card.fit-ultra .block-title {
+    font-size: 17px;
+    line-height: 1.05;
+  }
+
+  .card.fit-ultra .field-label {
+    margin-bottom: 4px;
+    font-size: 12.5px;
+  }
+
+  .card.fit-ultra .options {
+    gap: 4px;
+  }
+
+  .card.fit-ultra .option-label {
+    min-height: 30px;
+    padding: 4px 7px;
+    font-size: 11px;
+  }
+
+  .card.fit-ultra .option-label::before {
+    width: 16px;
+    height: 16px;
+  }
+
+  .card.fit-ultra .btn-row {
+    margin-top: 5px;
+  }
+
+  .card.fit-ultra .btn {
+    min-height: 36px;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+<div class="toast" id="toast"></div>
+<div class="confetti-container" id="confettiContainer"></div>
+
+<div class="app">
+
+  <div class="progress-wrap hidden-progress" id="progressWrap">
+    <div class="progress-header">
+      <span class="progress-text" id="stepLabel">Шаг 1 из 9</span>
+      <span class="progress-milestone" id="milestoneText">👤 Личные данные</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="step-dots" id="stepDots"></div>
+  </div>
+
+  <!-- Welcome -->
+  <div class="card" id="screen-welcome">
+    <div class="welcome-logo">🇦🇲</div>
+    <h1 class="welcome-title">Легализация в Армении</h1>
+    <p class="welcome-text">Пройдите умную анкету за 5 минут, и наши эксперты подберут идеальный путь получения статуса проживания с учётом ваших целей и бюджета.</p>
+    <div class="features">
+      <div class="feature"><span class="feature-icon">⚡</span>Быстро<br><small>5 минут</small></div>
+      <div class="feature"><span class="feature-icon">🔒</span>Конфиденциально<br><small>100%</small></div>
+      <div class="feature"><span class="feature-icon">💎</span>Бесплатно<br><small>Консультация</small></div>
+      <div class="feature"><span class="feature-icon">🎯</span>Персонально<br><small>Под вас</small></div>
+    </div>
+    <div class="info-box">💡 <b>Как это работает:</b><br>1. Отвечаете на вопросы<br>2. Получаете индивидуальный план<br>3. Менеджер связывается с вами в течение 24 часов</div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary pulse" onclick="nextScreen()">Начать анкету 🚀</button>
+    </div>
+  </div>
+
+  <!-- Screen 1 -->
+  <div class="card hidden" id="screen-1">
+    <div class="block-icon">👤</div>
+    <h2 class="block-title">Личные данные</h2>
+    <p class="block-subtitle">Базовая информация о вас</p>
+    <div class="micro-praise">✨ Отлично! Начнём с основ</div>
+
+    <div class="field">
+      <label class="field-label"><span class="num">1</span>ФИО (латиницей, как в загранпаспорте)</label>
+      <input type="text" id="fullName" placeholder="IVANOV IVAN SERGEEVICH" autocomplete="name">
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">2</span>Дата рождения</label>
+      <input type="date" id="birthDate">
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">3</span>Гражданство</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="citizenship" value="RF"><span class="option-label">🇷🇺 Российская Федерация</span></label>
+        <label class="option"><input type="radio" name="citizenship" value="BY"><span class="option-label">🇧🇾 Республика Беларусь</span></label>
+        <label class="option"><input type="radio" name="citizenship" value="OTHER"><span class="option-label">🌍 Иное</span></label>
+      </div>
+      <div class="sub-field" id="citizenshipOther">
+        <input type="text" id="citizenshipOtherText" placeholder="Укажите гражданство">
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">4</span>Наличие загранпаспорта</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="passport" value="YES"><span class="option-label">✅ Да, срок действия более 6 месяцев</span></label>
+        <label class="option"><input type="radio" name="passport" value="NO"><span class="option-label">⚠️ Нет / истекает менее чем через 6 месяцев</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">5</span>Где вы сейчас находитесь?</label>
+      <input type="text" id="location" placeholder="Страна, город">
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">6</span>Контакт для связи</label>
+      <input type="tel" id="phone" placeholder="+7 ___ ___ __ __" autocomplete="tel">
+      <div class="field-hint">💬 Укажите номер Telegram или WhatsApp — куда удобнее написать</div>
+      <div class="quick-buttons" style="margin-top: 10px;">
+        <button type="button" class="quick-btn" onclick="setMessenger(this,'telegram')">📱 Telegram</button>
+        <button type="button" class="quick-btn" onclick="setMessenger(this,'whatsapp')">💬 WhatsApp</button>
+        <button type="button" class="quick-btn" onclick="setMessenger(this,'both')">Оба</button>
+      </div>
+      <input type="hidden" id="preferredMessenger" value="">
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" onclick="nextScreen()">Далее →</button>
+    </div>
+  </div>
+
+  <!-- Screen 2 -->
+  <div class="card hidden" id="screen-2">
+    <div class="block-icon">🕊️</div>
+    <h2 class="block-title">Армянские корни</h2>
+    <p class="block-subtitle">Возможность упрощённой легализации</p>
+    <div class="hint"><span class="hint-icon">💡</span><div>Если у вас есть армянские корни, вы можете получить гражданство или Специальный статус на 10 лет по упрощённой процедуре.</div></div>
+    <div class="field">
+      <label class="field-label"><span class="num">1</span>Есть ли у вас армянские корни?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="armenian" value="YES" onchange="toggleArmenianDocs(true)"><span class="option-label">Да, я армянин/армянка по национальности</span></label>
+        <label class="option"><input type="radio" name="armenian" value="NO" onchange="toggleArmenianDocs(false)"><span class="option-label">Нет</span></label>
+      </div>
+    </div>
+    <div id="armenianDocsBlock" style="display:none;">
+      <div class="micro-praise">🎉 Прекрасно! Это открывает дополнительные возможности</div>
+      <div class="field">
+        <label class="field-label"><span class="num">2</span>Какими документами можете подтвердить национальность?</label>
+        <div class="options">
+          <label class="option"><input type="checkbox" name="docs" value="birth_self"><span class="option-label">Моё свидетельство о рождении (СССР/РФ)</span></label>
+          <label class="option"><input type="checkbox" name="docs" value="birth_parent"><span class="option-label">Свидетельство о рождении отца/матери</span></label>
+          <label class="option"><input type="checkbox" name="docs" value="birth_grand"><span class="option-label">Свидетельство дедушки/бабушки + документы родства</span></label>
+          <label class="option"><input type="checkbox" name="docs" value="baptism"><span class="option-label">Свидетельство о крещении (ААЦ)</span></label>
+          <label class="option"><input type="checkbox" name="docs" value="other"><span class="option-label">Иные документы</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label"><span class="num">3</span>Планируете ли жить в Армении с пропиской?</label>
+        <div class="options">
+          <label class="option"><input type="radio" name="live_armenia" value="YES"><span class="option-label">🏡 Да, планирую жить и прописаться</span></label>
+          <label class="option"><input type="radio" name="live_armenia" value="NO"><span class="option-label">📄 Нет, нужен статус без прописки (Спец. статус 10 лет)</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevScreen()">← Назад</button>
+      <button type="button" class="btn btn-primary" onclick="nextScreen()">Далее →</button>
+    </div>
+  </div>
+
+  <!-- Screen 3 -->
+  <div class="card hidden" id="screen-3">
+    <div class="block-icon">💼</div>
+    <h2 class="block-title">Деятельность и доход</h2>
+    <p class="block-subtitle">Основание для получения статуса</p>
+    <div class="field">
+      <label class="field-label"><span class="num">1</span>Основной источник дохода</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="income" value="remote"><span class="option-label">💻 Удалённая работа / фриланс / IT</span></label>
+        <label class="option"><input type="radio" name="income" value="business"><span class="option-label">🏢 Открытие или перенос бизнеса в Армению</span></label>
+        <label class="option"><input type="radio" name="income" value="job"><span class="option-label">👔 Работа в местной армянской компании</span></label>
+        <label class="option"><input type="radio" name="income" value="invest"><span class="option-label">💰 Инвестор (недвижимость, проекты)</span></label>
+        <label class="option"><input type="radio" name="income" value="passive"><span class="option-label">🌴 Пассивный доход / финансово независим</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">2</span>Планируете ли регистрацию бизнеса?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="business" value="IP"><span class="option-label">📋 Да, хочу открыть ИП</span></label>
+        <label class="option"><input type="radio" name="business" value="OOO"><span class="option-label">🏛️ Да, хочу открыть ООО</span></label>
+        <label class="option"><input type="radio" name="business" value="NO"><span class="option-label">❌ Нет, не планирую</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">3</span>Нужна ли помощь в трудоустройстве?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="job_help" value="NO"><span class="option-label">Нет, уже есть работа/клиенты</span></label>
+        <label class="option"><input type="radio" name="job_help" value="YES_LOCAL"><span class="option-label">Да, ищу работу в местной компании</span></label>
+        <label class="option"><input type="radio" name="job_help" value="MAYBE"><span class="option-label">Возможно, если будут предложения</span></label>
+        <label class="option"><input type="radio" name="job_help" value="REMOTE"><span class="option-label">Работаю удалённо, не нужно</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">4</span>Есть ли родственники с гражданством/ВНЖ Армении?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="relatives" value="YES" onchange="toggleSubField('relativesDetails',true)"><span class="option-label">Да</span></label>
+        <label class="option"><input type="radio" name="relatives" value="NO" onchange="toggleSubField('relativesDetails',false)"><span class="option-label">Нет</span></label>
+      </div>
+      <div class="sub-field" id="relativesDetails">
+        <input type="text" id="relativesText" placeholder="Степень родства и их статус">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevScreen()">← Назад</button>
+      <button type="button" class="btn btn-primary" onclick="nextScreen()">Далее →</button>
+    </div>
+  </div>
+
+  <!-- Screen 4 -->
+  <div class="card hidden" id="screen-4">
+    <div class="block-icon">⚖️</div>
+    <h2 class="block-title">Юридический статус</h2>
+    <p class="block-subtitle">История визитов и правовые аспекты</p>
+    <div class="field">
+      <label class="field-label"><span class="num">1</span>Были ли ранее визиты в Армению?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="visits" value="NO" onchange="toggleSubField('visitsDetails',false)"><span class="option-label">Нет, не был(а)</span></label>
+        <label class="option"><input type="radio" name="visits" value="YES" onchange="toggleSubField('visitsDetails',true)"><span class="option-label">Да, был(а)</span></label>
+      </div>
+      <div class="sub-field" id="visitsDetails">
+        <input type="text" id="visitsText" placeholder="Примерный суммарный срок пребывания">
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">2</span>Нарушали ли визовый режим (&gt;180 дней без регистрации)?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="violation" value="NO"><span class="option-label">✅ Нет</span></label>
+        <label class="option"><input type="radio" name="violation" value="YES"><span class="option-label">⚠️ Да / Не уверен(а)</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">3</span>Имеются ли судимости?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="criminal" value="NO"><span class="option-label">✅ Нет (готов(а) предоставить справку с апостилем)</span></label>
+        <label class="option"><input type="radio" name="criminal" value="YES"><span class="option-label">⚠️ Да, имелась/имеется</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">4</span>Переезжаете ли с семьёй?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="family" value="SOLO" onchange="toggleSubField('familyDetails',false)"><span class="option-label">🧍 Один/одна</span></label>
+        <label class="option"><input type="radio" name="family" value="FAMILY" onchange="toggleSubField('familyDetails',true)"><span class="option-label">👨‍👩‍👧 С семьёй</span></label>
+      </div>
+      <div class="sub-field" id="familyDetails">
+        <input type="text" id="familyText" placeholder="Кол-во членов семьи и их гражданство">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevScreen()">← Назад</button>
+      <button type="button" class="btn btn-primary" onclick="nextScreen()">Далее →</button>
+    </div>
+  </div>
+
+  <!-- Screen 5 -->
+  <div class="card hidden" id="screen-5">
+    <div class="block-icon">🏠</div>
+    <h2 class="block-title">Жилищные планы</h2>
+    <p class="block-subtitle">Покупка или аренда жилья</p>
+    <div class="field">
+      <label class="field-label"><span class="num">1</span>Какой вариант жилья вам подходит?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="housing" value="BUY" onchange="toggleHousingType('buy')"><span class="option-label">🏠 Покупка квартиры/дома</span></label>
+        <label class="option"><input type="radio" name="housing" value="RENT" onchange="toggleHousingType('rent')"><span class="option-label">🔑 Аренда на длительный срок</span></label>
+        <label class="option"><input type="radio" name="housing" value="TEMP" onchange="toggleHousingType('temp')"><span class="option-label">🏨 Временное жильё (1–3 мес) + потом решение</span></label>
+        <label class="option"><input type="radio" name="housing" value="UNSURE" onchange="toggleHousingType('unsure')"><span class="option-label">🤔 Пока не определился, нужна консультация</span></label>
+      </div>
+    </div>
+    <div id="budgetBuyBlock" style="display:none;">
+      <div class="field">
+        <label class="field-label"><span class="num">2</span>Бюджет на покупку</label>
+        <div class="quick-buttons">
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'buy','60k')">До $60K</button>
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'buy','60-100k')">$60–100K</button>
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'buy','100-150k')">$100–150K</button>
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'buy','150-250k')">$150–250K</button>
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'buy','250k+')">$250K+</button>
+        </div>
+        <input type="hidden" id="buyBudget">
+      </div>
+      <div class="field">
+        <label class="field-label"><span class="num">3</span>Какие районы рассматриваете?</label>
+        <div class="options">
+          <label class="option"><input type="checkbox" name="districts" value="center"><span class="option-label">🏛️ Центр (пл. Республики, Маштоца)</span></label>
+          <label class="option"><input type="checkbox" name="districts" value="nork"><span class="option-label">🌳 Норк Мараш</span></label>
+          <label class="option"><input type="checkbox" name="districts" value="arabkir"><span class="option-label">🏘️ Арабкир</span></label>
+          <label class="option"><input type="checkbox" name="districts" value="davtashen"><span class="option-label">🌆 Давташен</span></label>
+          <label class="option"><input type="checkbox" name="districts" value="any"><span class="option-label">📍 Любой, нужна рекомендация</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label"><span class="num">4</span>Требования к квартире</label>
+        <div class="quick-buttons">
+          <button type="button" class="quick-btn" onclick="selectRooms(this,1)">1 комн.</button>
+          <button type="button" class="quick-btn" onclick="selectRooms(this,2)">2 комн.</button>
+          <button type="button" class="quick-btn" onclick="selectRooms(this,3)">3 комн.</button>
+          <button type="button" class="quick-btn" onclick="selectRooms(this,4)">4+ комн.</button>
+        </div>
+        <input type="hidden" id="roomsCount">
+        <div style="margin-top: 14px;">
+          <label class="option" style="margin-bottom: 8px;"><input type="checkbox" id="needParking"><span class="option-label">🚗 Парковка</span></label>
+          <label class="option" style="margin-bottom: 8px;"><input type="checkbox" id="needFurnished"><span class="option-label">🛋️ Меблированная</span></label>
+          <label class="option"><input type="checkbox" id="needSchool"><span class="option-label">🎒 Рядом школа/садик</span></label>
+        </div>
+      </div>
+    </div>
+    <div id="budgetRentBlock" style="display:none;">
+      <div class="field">
+        <label class="field-label"><span class="num">2</span>Бюджет на аренду в месяц</label>
+        <div class="quick-buttons">
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'rent','500')">До $500</button>
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'rent','500-800')">$500–800</button>
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'rent','800-1200')">$800–1 200</button>
+          <button type="button" class="quick-btn" onclick="selectBudget(this,'rent','1200+')">$1 200+</button>
+        </div>
+        <input type="hidden" id="rentBudget">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevScreen()">← Назад</button>
+      <button type="button" class="btn btn-primary" onclick="nextScreen()">Далее →</button>
+    </div>
+  </div>
+
+  <!-- Screen 6 -->
+  <div class="card hidden" id="screen-6">
+    <div class="block-icon">👨‍👩‍👧‍👦</div>
+    <h2 class="block-title">Семья и образование</h2>
+    <p class="block-subtitle">Дети и потребности семьи</p>
+    <div class="field">
+      <label class="field-label"><span class="num">1</span>Есть ли дети школьного возраста?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="children" value="SCHOOL"><span class="option-label">📚 Да, нужна школа/лицей</span></label>
+        <label class="option"><input type="radio" name="children" value="KINDER"><span class="option-label">🧸 Да, но пока дошкольники (садик)</span></label>
+        <label class="option"><input type="radio" name="children" value="NO"><span class="option-label">❌ Нет детей</span></label>
+        <label class="option"><input type="radio" name="children" value="ADULT"><span class="option-label">🎓 Дети взрослые, не актуально</span></label>
+      </div>
+    </div>
+    <div class="field" id="languageBlock" style="display:none;">
+      <label class="field-label"><span class="num">2</span>Язык обучения для детей</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="language" value="RU"><span class="option-label">🇷🇺 Русский</span></label>
+        <label class="option"><input type="radio" name="language" value="EN"><span class="option-label">🇬🇧 Английский (международная школа)</span></label>
+        <label class="option"><input type="radio" name="language" value="AM"><span class="option-label">🇦🇲 Армянский</span></label>
+        <label class="option"><input type="radio" name="language" value="BILINGUAL"><span class="option-label">🌐 Двуязычное обучение</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">3</span>Нужна ли помощь супругу/супруге с работой?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="spouse_work" value="ACTIVE"><span class="option-label">Да, активный поиск работы</span></label>
+        <label class="option"><input type="radio" name="spouse_work" value="REMOTE"><span class="option-label">Работает удалённо</span></label>
+        <label class="option"><input type="radio" name="spouse_work" value="NO"><span class="option-label">Не планирует работать</span></label>
+        <label class="option"><input type="radio" name="spouse_work" value="BUSINESS"><span class="option-label">Планирует открыть бизнес</span></label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevScreen()">← Назад</button>
+      <button type="button" class="btn btn-primary" onclick="nextScreen()">Далее →</button>
+    </div>
+  </div>
+
+  <!-- Screen 7 -->
+  <div class="card hidden" id="screen-7">
+    <div class="block-icon">⏰</div>
+    <h2 class="block-title">Сроки и приоритеты</h2>
+    <p class="block-subtitle">Когда и что важнее всего</p>
+    <div class="field">
+      <label class="field-label"><span class="num">1</span>Когда планируете переезд?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="timeline" value="1M"><span class="option-label">⚡ В течение 1 месяца</span></label>
+        <label class="option"><input type="radio" name="timeline" value="3M"><span class="option-label">📅 1–3 месяца</span></label>
+        <label class="option"><input type="radio" name="timeline" value="6M"><span class="option-label">🗓️ 3–6 месяцев</span></label>
+        <label class="option"><input type="radio" name="timeline" value="12M"><span class="option-label">📆 6–12 месяцев</span></label>
+        <label class="option"><input type="radio" name="timeline" value="RESEARCH"><span class="option-label">🔍 Пока изучаю варианты</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">2</span>Что для вас важнее всего? <small style="color:#718096;font-weight:400;">(до 3)</small></label>
+      <div class="priority-tags" id="priorityTags">
+        <div class="priority-tag" onclick="togglePriority(this)" data-value="speed"><span class="tag-emoji">⚡</span>Скорость</div>
+        <div class="priority-tag" onclick="togglePriority(this)" data-value="cost"><span class="tag-emoji">💰</span>Стоимость</div>
+        <div class="priority-tag" onclick="togglePriority(this)" data-value="housing"><span class="tag-emoji">🏠</span>Жильё</div>
+        <div class="priority-tag" onclick="togglePriority(this)" data-value="job"><span class="tag-emoji">👔</span>Работа</div>
+        <div class="priority-tag" onclick="togglePriority(this)" data-value="school"><span class="tag-emoji">📚</span>Школа</div>
+        <div class="priority-tag" onclick="togglePriority(this)" data-value="medical"><span class="tag-emoji">🏥</span>Медицина</div>
+        <div class="priority-tag" onclick="togglePriority(this)" data-value="community"><span class="tag-emoji">🤝</span>Комьюнити</div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">3</span>Готовы приехать в Ереван для оформления?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="visit" value="YES_SOON"><span class="option-label">✈️ Да, могу прилететь скоро</span></label>
+        <label class="option"><input type="radio" name="visit" value="DISTANT"><span class="option-label">💻 Предпочитаю дистанционно через консульство</span></label>
+        <label class="option"><input type="radio" name="visit" value="UNSURE"><span class="option-label">🤔 Нужно уточнить детали</span></label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevScreen()">← Назад</button>
+      <button type="button" class="btn btn-primary" onclick="nextScreen()">Далее →</button>
+    </div>
+  </div>
+
+  <!-- Screen 8 -->
+  <div class="card hidden" id="screen-8">
+    <div class="block-icon">🎁</div>
+    <h2 class="block-title">Дополнительные услуги</h2>
+    <p class="block-subtitle">Что ещё может быть полезно</p>
+    <div class="field">
+      <label class="field-label">Выберите интересные услуги:</label>
+      <div class="options">
+        <label class="option"><input type="checkbox" name="services" value="bank"><span class="option-label">🏦 Открытие банковского счёта</span></label>
+        <label class="option"><input type="checkbox" name="services" value="car"><span class="option-label">🚗 Покупка/аренда автомобиля</span></label>
+        <label class="option"><input type="checkbox" name="services" value="sim"><span class="option-label">📱 Получение местной SIM-карты</span></label>
+        <label class="option"><input type="checkbox" name="services" value="medical"><span class="option-label">🏥 Поиск врача/страховки</span></label>
+        <label class="option"><input type="checkbox" name="services" value="moving"><span class="option-label">📦 Перевозка вещей из РФ/РБ</span></label>
+        <label class="option"><input type="checkbox" name="services" value="language"><span class="option-label">🎓 Курсы армянского языка</span></label>
+        <label class="option"><input type="checkbox" name="services" value="community"><span class="option-label">🤝 Знакомство с комьюнити экспатов</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Откуда узнали о INTEGRA?</label>
+      <div class="options">
+        <label class="option"><input type="radio" name="source" value="friends"><span class="option-label">👥 Рекомендация друзей</span></label>
+        <label class="option"><input type="radio" name="source" value="social"><span class="option-label">📱 Социальные сети</span></label>
+        <label class="option"><input type="radio" name="source" value="google"><span class="option-label">🔍 Поиск в Google/Yandex</span></label>
+        <label class="option"><input type="radio" name="source" value="forum"><span class="option-label">💬 Форумы экспатов</span></label>
+        <label class="option"><input type="radio" name="source" value="other"><span class="option-label">📌 Другое</span></label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevScreen()">← Назад</button>
+      <button type="button" class="btn btn-primary" onclick="nextScreen()">Далее →</button>
+    </div>
+  </div>
+
+  <!-- Screen 9 -->
+  <div class="card hidden" id="screen-9">
+    <div class="block-icon">✍️</div>
+    <h2 class="block-title">Финальный шаг</h2>
+    <p class="block-subtitle">Согласие и отправка анкеты</p>
+    <div class="hint"><span class="hint-icon">🔒</span><div>Все данные строго конфиденциальны и используются только для подготовки вашего персонального плана.</div></div>
+    <div class="preview-plan" id="previewPlan">
+      <div class="preview-title">🎯 Ваш предварительный план</div>
+      <div id="previewContent"><div class="preview-item"><span class="preview-check">•</span><span>Заполните анкету для формирования плана</span></div></div>
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">1</span>Дата заполнения</label>
+      <input type="text" id="signDate" readonly style="background:#f0f4f8;cursor:default;">
+    </div>
+    <div class="field">
+      <label class="field-label"><span class="num">2</span>Подтверждение согласия</label>
+      <div class="signature-box" id="signatureBox" onclick="signForm()">👆 Нажмите, чтобы подтвердить согласие</div>
+    </div>
+    <div class="field">
+      <label class="option">
+        <input type="checkbox" id="consent" onchange="checkSubmit()">
+        <span class="option-label">Я даю согласие на обработку моих персональных данных компанией <b>INTEGRA Holding</b> для подготовки коммерческого предложения по легализации в Армении.</span>
+      </label>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" onclick="prevScreen()">← Назад</button>
+      <button type="button" class="btn btn-submit" id="submitBtn" onclick="submitForm()">🚀 Отправить анкету</button>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="card hidden" id="screen-success">
+    <div class="success-icon">🎉</div>
+    <h2 class="success-title">Анкета отправлена!</h2>
+    <p class="success-text">Спасибо! Наши эксперты уже анализируют ваши ответы и подготовят персональный план легализации.</p>
+    <div class="info-box">⏱️ <b>Свяжемся с вами в течение 24 часов</b><br>👔 Менеджеры: Ксения или Овик<br>📞 Через ваш предпочтительный мессенджер</div>
+    <div class="contact-buttons">
+      <a href="https://t.me/" target="_blank" rel="noopener" class="contact-btn telegram" id="tgLink">📱 Написать в Telegram</a>
+      <a href="https://wa.me/" target="_blank" rel="noopener" class="contact-btn whatsapp" id="waLink">💬 Написать в WhatsApp</a>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" onclick="resetForm()">Заполнить ещё одну анкету</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var screens = ['welcome','1','2','3','4','5','6','7','8','9','success'];
+  var currentIdx = 0;
+  var isArmenian = null;
+  var priorities = [];
+  var TOTAL_STEPS = 9;
+  var questionPositions = {};
+  var answerStreak = 0;
+  var shownMotivations = {};
+  var encouragements = [
+    'Отличный темп — продолжаем!',
+    'Супер! План становится точнее.',
+    'Так держать — самое сложное уже позади.',
+    'Прекрасно, этот ответ очень поможет эксперту.',
+    'Ещё немного — и персональный маршрут готов.',
+    'Вы отлично справляетесь!'
+  ];
+
+  // Particles
+  (function() {
+    var c = document.getElementById('particles');
+    for (var i = 0; i < 15; i++) {
+      var p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random()*100+'%';
+      p.style.animationDuration = (8+Math.random()*12)+'s';
+      p.style.animationDelay = Math.random()*10+'s';
+      var s = (4+Math.random()*4)+'px';
+      p.style.width = s; p.style.height = s;
+      c.appendChild(p);
+    }
+  })();
+
+  // Toast
+  var toastTimer = null;
+  function showToast(msg, type, title, icon) {
+    var t = document.getElementById('toast');
+    type = type || 'success';
+    title = title || (type === 'warning' ? 'Обратите внимание' : 'Отлично!');
+    icon = icon || (type === 'warning' ? '💡' : '✨');
+    t.className = 'toast ' + type;
+    t.innerHTML = '';
+    var inner = document.createElement('div');
+    inner.className = 'toast-inner';
+    var iconBox = document.createElement('div');
+    iconBox.className = 'toast-icon';
+    iconBox.textContent = icon;
+    var copy = document.createElement('div');
+    var titleEl = document.createElement('div');
+    titleEl.className = 'toast-title';
+    titleEl.textContent = title;
+    var messageEl = document.createElement('div');
+    messageEl.className = 'toast-message';
+    messageEl.textContent = msg;
+    var meter = document.createElement('div');
+    meter.className = 'toast-meter';
+    copy.appendChild(titleEl);
+    copy.appendChild(messageEl);
+    inner.appendChild(iconBox);
+    inner.appendChild(copy);
+    t.appendChild(inner);
+    t.appendChild(meter);
+    void t.offsetWidth;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 3800);
+  }
+
+  function showMotivation(key, title, message, icon) {
+    if (shownMotivations[key]) return;
+    shownMotivations[key] = true;
+    showToast(message, 'motivation', title, icon);
+  }
+
+  function checkAnswerMilestone() {
+    var milestones = {
+      3: ['Отличный старт!', 'Первые ответы уже помогают подобрать подходящий путь.', '🚀'],
+      7: ['Вы в отличном темпе!', 'Продолжайте — персональный план становится всё точнее.', '🔥'],
+      12: ['Серьёзный прогресс!', 'Большая часть важных данных уже собрана.', '🏆'],
+      18: ['Финиш уже близко!', 'Осталось совсем немного — не останавливайтесь.', '⭐']
+    };
+    var item = milestones[answerStreak];
+    if (item) showMotivation('answers-' + answerStreak, item[0], item[1], item[2]);
+  }
+
+  function checkSectionMilestone(step) {
+    var milestones = {
+      3: ['Первый этап готов', 'Вы уже прошли треть пути. Отличная работа!', '🌟'],
+      6: ['Больше половины!', 'Самое объёмное позади — до результата совсем недалеко.', '💪'],
+      8: ['Финишная прямая', 'Ещё пара шагов — и ваш персональный план будет готов.', '🏁'],
+      9: ['Последний шаг!', 'Подтвердите согласие — и анкета полностью готова.', '🎯']
+    };
+    var item = milestones[step];
+    if (item) {
+      setTimeout(function() {
+        showMotivation('section-' + step, item[0], item[1], item[2]);
+      }, 260);
+    }
+  }
+
+  // Confetti
+  function launchConfetti() {
+    var c = document.getElementById('confettiContainer');
+    var colors = ['#667eea','#764ba2','#f093fb','#ffd700','#48bb78','#f56565','#00aced'];
+    for (var i = 0; i < 60; i++) {
+      var p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random()*100+'%';
+      p.style.background = colors[Math.floor(Math.random()*colors.length)];
+      p.style.animationDuration = (2+Math.random()*2)+'s';
+      p.style.animationDelay = Math.random()*0.5+'s';
+      p.style.borderRadius = Math.random()>0.5?'50%':'2px';
+      var s = (6+Math.random()*8)+'px';
+      p.style.width = s; p.style.height = s;
+      c.appendChild(p);
+    }
+    setTimeout(function(){ c.innerHTML=''; }, 4000);
+  }
+
+  function escapeHtml(str) {
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  // Navigation
+  function showScreen(idx) {
+    screens.forEach(function(s, i) {
+      var el = document.getElementById('screen-'+s);
+      if (!el) return;
+      if (i === idx) {
+        el.classList.remove('hidden');
+        el.style.animation = 'none';
+        void el.offsetHeight;
+        el.style.animation = '';
+      } else {
+        el.classList.add('hidden');
+      }
+    });
+    currentIdx = idx;
+    updateProgress();
+    if (idx > 1 && idx <= TOTAL_STEPS) checkSectionMilestone(idx);
+    if (idx === 9) { updatePreview(); setSignDate(); }
+    if (idx > 0 && idx < screens.length - 1) {
+      requestAnimationFrame(function() { refreshQuestionFlow(true); });
+    }
+    saveProgress();
+  }
+
+  function getCurrentCard() {
+    return document.getElementById('screen-' + screens[currentIdx]);
+  }
+
+  function wrapStepCards() {
+    for (var i = 1; i <= TOTAL_STEPS; i++) {
+      var card = document.getElementById('screen-' + i);
+      if (!card || card.querySelector(':scope > .card-inner')) continue;
+      var inner = document.createElement('div');
+      inner.className = 'card-inner';
+      while (card.firstChild) inner.appendChild(card.firstChild);
+      card.appendChild(inner);
+    }
+  }
+
+  function isFieldAvailable(field, card) {
+    var node = field;
+    while (node && node !== card) {
+      if (node.style && node.style.display === 'none') return false;
+      node = node.parentElement;
+    }
+    return true;
+  }
+
+  function getAvailableFields(card) {
+    if (!card) return [];
+    return Array.prototype.filter.call(card.querySelectorAll('.field'), function(field) {
+      return isFieldAvailable(field, card);
+    });
+  }
+
+  function ensureQuestionHud(card) {
+    var hud = card.querySelector('.question-hud');
+    if (hud) return hud;
+    hud = document.createElement('div');
+    hud.className = 'question-hud';
+    hud.innerHTML = '<span class="question-count"></span><span class="question-streak">🔥 Стартуем!</span><div class="encouragement-text" role="status" aria-live="polite">Здесь нет неправильных ответов — выбирайте подходящий вам вариант.</div>';
+    var subtitle = card.querySelector('.block-subtitle');
+    if (subtitle) subtitle.insertAdjacentElement('afterend', hud);
+    return hud;
+  }
+
+  function getEncouragement(target) {
+    if (target && target.name === 'armenian' && target.value === 'YES') return 'Отлично! Армянские корни могут заметно упростить оформление.';
+    if (target && target.name === 'passport' && target.value === 'YES') return 'Отличная база — с паспортом можно двигаться дальше без задержек.';
+    if (target && target.name === 'family' && target.value === 'FAMILY') return 'Учтём единый маршрут оформления для всей семьи.';
+    if (target && target.name === 'housing' && target.value === 'BUY') return 'Добавим в план безопасный подбор и проверку недвижимости.';
+    if (target && target.name === 'children' && (target.value === 'SCHOOL' || target.value === 'KINDER')) return 'Хорошо, включим школы или садики в персональные рекомендации.';
+    if (target && target.name === 'timeline' && target.value === '1M') return 'Поняли: скорость оформления будет главным приоритетом.';
+    if (answerStreak === 3) return 'Отличное начало — уже можно наметить первые варианты.';
+    if (answerStreak === 7) return 'Вы уже далеко продвинулись. Продолжаем в том же темпе!';
+    if (answerStreak === 12) return 'Больше половины важных данных уже собрано.';
+    return encouragements[(answerStreak - 1) % encouragements.length];
+  }
+
+  function updateEncouragement(target) {
+    var card = getCurrentCard();
+    if (!card) return;
+    var message = card.querySelector('.encouragement-text');
+    if (!message) return;
+    message.textContent = getEncouragement(target);
+    message.classList.remove('message-in');
+    requestAnimationFrame(function() {
+      message.classList.add('message-in');
+    });
+  }
+
+  function refreshQuestionFlow(resetPosition) {
+    var card = getCurrentCard();
+    if (!card || currentIdx === 0 || currentIdx === screens.length - 1) return;
+    var fields = getAvailableFields(card);
+    if (!fields.length) return;
+    var key = screens[currentIdx];
+    if (resetPosition || questionPositions[key] === undefined) questionPositions[key] = 0;
+    questionPositions[key] = Math.max(0, Math.min(questionPositions[key], fields.length - 1));
+    var activeIndex = questionPositions[key];
+    var allFields = card.querySelectorAll('.field');
+    for (var i = 0; i < allFields.length; i++) allFields[i].classList.remove('active-question');
+    fields[activeIndex].classList.add('active-question');
+    var optionCount = fields[activeIndex].querySelectorAll('.option').length;
+    card.classList.toggle('dense-question', optionCount > 5);
+
+    var hud = ensureQuestionHud(card);
+    hud.querySelector('.question-count').textContent = 'Вопрос ' + (activeIndex + 1) + ' из ' + fields.length;
+    hud.querySelector('.question-streak').textContent = answerStreak
+      ? '🔥 Серия ' + answerStreak
+      : '✨ Выбирайте смело';
+
+    var nextBtn = card.querySelector('.btn-primary:not(.btn-submit)');
+    if (nextBtn) nextBtn.textContent = activeIndex < fields.length - 1 ? 'Следующий вопрос →' : 'Дальше 🚀';
+    var backBtn = card.querySelector('.btn-secondary');
+    if (backBtn) backBtn.textContent = activeIndex > 0 ? '← Вопрос' : '← Раздел';
+    requestAnimationFrame(function() { fitActiveScreen(card); });
+  }
+
+  function fitActiveScreen(card) {
+    if (!card || card.classList.contains('hidden')) return;
+    card.classList.remove('fit-tight', 'fit-ultra', 'fit-scaled');
+    if (card.scrollHeight <= card.clientHeight + 1) return;
+    card.classList.add('fit-tight');
+    if (card.scrollHeight <= card.clientHeight + 1) return;
+    card.classList.add('fit-ultra');
+  }
+
+  function celebrateAnswer(target) {
+    if (!target || !target.closest('.field')) return;
+    if (target.type === 'checkbox' && !target.checked) return;
+    answerStreak++;
+    updateEncouragement(target);
+    checkAnswerMilestone();
+    refreshQuestionFlow(false);
+  }
+
+  function updateProgress() {
+    var pw = document.getElementById('progressWrap');
+    if (currentIdx === 0 || currentIdx === screens.length-1) {
+      pw.classList.add('hidden-progress');
+      return;
+    }
+    pw.classList.remove('hidden-progress');
+    var step = currentIdx;
+    var percent = Math.round((step/TOTAL_STEPS)*100);
+    document.getElementById('progressFill').style.width = percent+'%';
+    document.getElementById('stepLabel').textContent = 'Шаг '+step+' из '+TOTAL_STEPS;
+    var ms = {1:'👤 Личные данные',2:'🕊️ Корни',3:'💼 Деятельность',4:'⚖️ Юриспруденция',5:'🏠 Жильё',6:'👨‍👩‍👧 Семья',7:'⏰ Сроки',8:'🎁 Услуги',9:'✍️ Финал'};
+    document.getElementById('milestoneText').textContent = ms[step]||'';
+    var dc = document.getElementById('stepDots');
+    dc.innerHTML = '';
+    for (var i=1;i<=TOTAL_STEPS;i++) {
+      var d = document.createElement('div');
+      d.className = 'step-dot';
+      if (i===step) d.classList.add('active');
+      else if (i<step) d.classList.add('done');
+      dc.appendChild(d);
+    }
+  }
+
+  function nextScreen() {
+    if (currentIdx > 0 && currentIdx < screens.length - 1) {
+      var card = getCurrentCard();
+      var fields = getAvailableFields(card);
+      var key = screens[currentIdx];
+      var position = questionPositions[key] || 0;
+      if (position < fields.length - 1) {
+        questionPositions[key] = position + 1;
+        refreshQuestionFlow(false);
+        return;
+      }
+    }
+    var next = currentIdx + 1;
+    if (next < screens.length) {
+      questionPositions[screens[next]] = 0;
+      showScreen(next);
+    }
+  }
+
+  function prevScreen() {
+    if (currentIdx > 0 && currentIdx < screens.length - 1) {
+      var key = screens[currentIdx];
+      var position = questionPositions[key] || 0;
+      if (position > 0) {
+        questionPositions[key] = position - 1;
+        refreshQuestionFlow(false);
+        return;
+      }
+    }
+    var prev = currentIdx - 1;
+    if (prev >= 0) {
+      showScreen(prev);
+      if (prev > 0) {
+        requestAnimationFrame(function() {
+          var fields = getAvailableFields(getCurrentCard());
+          questionPositions[screens[currentIdx]] = Math.max(0, fields.length - 1);
+          refreshQuestionFlow(false);
+        });
+      }
+    }
+  }
+
+  // Toggles
+  function toggleArmenianDocs(val) {
+    isArmenian = val;
+    document.getElementById('armenianDocsBlock').style.display = val?'block':'none';
+    refreshQuestionFlow(false);
+  }
+
+  function toggleSubField(id, show) {
+    document.getElementById(id).classList.toggle('visible', show);
+    refreshQuestionFlow(false);
+  }
+
+  function toggleHousingType(type) {
+    document.getElementById('budgetBuyBlock').style.display = (type==='buy')?'block':'none';
+    document.getElementById('budgetRentBlock').style.display = (type==='rent')?'block':'none';
+    refreshQuestionFlow(false);
+  }
+
+  function setMessenger(btn, type) {
+    document.getElementById('preferredMessenger').value = type;
+    var btns = btn.parentElement.querySelectorAll('.quick-btn');
+    for (var i=0;i<btns.length;i++) btns[i].classList.remove('active');
+    btn.classList.add('active');
+    celebrateAnswer(btn);
+  }
+
+  function selectBudget(btn, type, value) {
+    var parent = btn.parentElement;
+    var all = parent.querySelectorAll('.quick-btn');
+    for (var i=0;i<all.length;i++) all[i].classList.remove('active');
+    btn.classList.add('active');
+    document.getElementById(type==='buy'?'buyBudget':'rentBudget').value = value;
+    celebrateAnswer(btn);
+  }
+
+  function selectRooms(btn, count) {
+    var parent = btn.parentElement;
+    var all = parent.querySelectorAll('.quick-btn');
+    for (var i=0;i<all.length;i++) all[i].classList.remove('active');
+    btn.classList.add('active');
+    document.getElementById('roomsCount').value = count;
+    celebrateAnswer(btn);
+  }
+
+  function togglePriority(el) {
+    var value = el.dataset.value;
+    if (el.classList.contains('selected')) {
+      el.classList.remove('selected');
+      priorities = priorities.filter(function(p){return p!==value;});
+    } else {
+      if (priorities.length >= 3) { showToast('Можно выбрать максимум три главных приоритета.', 'warning', 'Выберите самое важное', '💡'); return; }
+      el.classList.add('selected');
+      priorities.push(value);
+      celebrateAnswer(el);
+    }
+  }
+
+  // Children → language
+  var childRadios = document.querySelectorAll('input[name="children"]');
+  for (var i=0;i<childRadios.length;i++) {
+    childRadios[i].addEventListener('change', function() {
+      var show = this.value==='SCHOOL'||this.value==='KINDER';
+      document.getElementById('languageBlock').style.display = show?'block':'none';
+      refreshQuestionFlow(false);
+    });
+  }
+
+  // Citizenship other
+  var citRadios = document.querySelectorAll('input[name="citizenship"]');
+  for (var i=0;i<citRadios.length;i++) {
+    citRadios[i].addEventListener('change', function() {
+      var checked = document.querySelector('input[name="citizenship"]:checked');
+      document.getElementById('citizenshipOther').classList.toggle('visible', checked&&checked.value==='OTHER');
+    });
+  }
+
+  function signForm() {
+    var box = document.getElementById('signatureBox');
+    if (box.classList.contains('signed')) return;
+    var now = new Date();
+    var name = document.getElementById('fullName').value || 'Кандидат';
+    box.classList.add('signed');
+    box.innerHTML = '✅ Подписано: <b>'+escapeHtml(name)+'</b><br><small>'+now.toLocaleDateString('ru-RU')+'</small>';
+    document.getElementById('consent').checked = true;
+    checkSubmit();
+  }
+
+  function checkSubmit() {
+  }
+
+  function setSignDate() {
+    var now = new Date();
+    var dd = String(now.getDate()).padStart(2,'0');
+    var mm = String(now.getMonth()+1).padStart(2,'0');
+    document.getElementById('signDate').value = dd+'.'+mm+'.'+now.getFullYear();
+  }
+
+  function updatePreview() {
+    var items = [];
+    var c = document.querySelector('input[name="citizenship"]:checked');
+    if (c) { var cl={RF:'🇷🇺 Гражданин РФ',BY:'🇧🇾 Гражданин РБ',OTHER:'🌍 Иное гражданство'}; items.push(cl[c.value]||''); }
+    var inc = document.querySelector('input[name="income"]:checked');
+    if (inc) { var il={remote:'💻 Регистрация ИП для IT',business:'🏢 Открытие бизнеса',job:'👔 РВП через трудовой договор',invest:'💰 Инвестиционный ВНЖ',passive:'🌴 Статус финансово независимого'}; items.push(il[inc.value]||''); }
+    var h = document.querySelector('input[name="housing"]:checked');
+    if (h) { var hl={BUY:'🏠 Помощь с покупкой недвижимости',RENT:'🔑 Подбор аренды',TEMP:'🏨 Временное жильё + подбор',UNSURE:'🤝 Консультация по жилью'}; items.push(hl[h.value]||''); }
+    var f = document.querySelector('input[name="family"]:checked');
+    if (f&&f.value==='FAMILY') items.push('👨‍👩‍👧 Оформление РВП для всей семьи');
+    var ch = document.querySelector('input[name="children"]:checked');
+    if (ch&&(ch.value==='SCHOOL'||ch.value==='KINDER')) items.push('📚 Подбор школы/садика');
+    if (isArmenian===true) items.push('🕊️ Упрощённая процедура (армянские корни)');
+
+    var html = items.map(function(item){
+      return '<div class="preview-item"><span class="preview-check">✓</span><span>'+item+'</span></div>';
+    }).join('');
+    document.getElementById('previewContent').innerHTML = html || '<div class="preview-item"><span class="preview-check">•</span><span>Заполните анкету для формирования плана</span></div>';
+  }
+
+  function submitForm() {
+    var message = encodeURIComponent('Здравствуйте! Я заполнил(а) анкету INTEGRA по легализации в Армении.');
+    document.getElementById('tgLink').href='https://t.me/share/url?url=&text='+message;
+    document.getElementById('waLink').href='https://wa.me/?text='+message;
+    showScreen(screens.length-1);
+    launchConfetti();
+    showToast('Спасибо! Персональный план уже готовится.', 'success', 'Анкета отправлена!', '🎉');
+  }
+
+  function resetForm() {
+    var inputs = document.querySelectorAll('input');
+    for (var i=0;i<inputs.length;i++) {
+      var inp = inputs[i];
+      if (inp.type==='checkbox'||inp.type==='radio') inp.checked=false;
+      else if (inp.type!=='hidden') inp.value='';
+    }
+    document.getElementById('signatureBox').classList.remove('signed');
+    document.getElementById('signatureBox').innerHTML='👆 Нажмите, чтобы подтвердить согласие';
+    document.getElementById('armenianDocsBlock').style.display='none';
+    var subs = document.querySelectorAll('.sub-field');
+    for (var i=0;i<subs.length;i++) subs[i].classList.remove('visible');
+    var qbs = document.querySelectorAll('.quick-btn');
+    for (var i=0;i<qbs.length;i++) qbs[i].classList.remove('active');
+    var pts = document.querySelectorAll('.priority-tag');
+    for (var i=0;i<pts.length;i++) pts[i].classList.remove('selected');
+    document.getElementById('budgetBuyBlock').style.display='none';
+    document.getElementById('budgetRentBlock').style.display='none';
+    document.getElementById('languageBlock').style.display='none';
+    document.getElementById('preferredMessenger').value='';
+    document.getElementById('consent').checked=false;
+    isArmenian=null;
+    priorities=[];
+    questionPositions={};
+    answerStreak=0;
+    shownMotivations={};
+    localStorage.removeItem('integra_form_progress');
+    showScreen(0);
+  }
+
+  // Save/Load
+  function saveProgress() {
+    try {
+      var data = {_screen:currentIdx, _priorities:priorities, _isArmenian:isArmenian};
+      var inputs = document.querySelectorAll('input');
+      for (var i=0;i<inputs.length;i++) {
+        var inp = inputs[i];
+        if (inp.type==='radio'&&inp.checked) data['radio_'+inp.name]=inp.value;
+        else if (inp.type==='checkbox'&&inp.checked&&inp.name) {
+          if (!data['check_'+inp.name]) data['check_'+inp.name]=[];
+          data['check_'+inp.name].push(inp.value);
+        } else if (inp.type!=='radio'&&inp.type!=='checkbox'&&inp.id) {
+          data['field_'+inp.id]=inp.value;
+        }
+      }
+      localStorage.setItem('integra_form_progress', JSON.stringify(data));
+    } catch(e){}
+  }
+
+  function loadProgress() {
+    try {
+      var saved = localStorage.getItem('integra_form_progress');
+      if (!saved) return 0;
+      var data = JSON.parse(saved);
+      Object.keys(data).forEach(function(key) {
+        if (key==='_screen'||key==='_priorities'||key==='_isArmenian') return;
+        if (key.indexOf('radio_')===0) {
+          var name = key.substring(6);
+          var radios = document.querySelectorAll('input[name="'+name+'"]');
+          for (var i=0;i<radios.length;i++) {
+            if (radios[i].value===data[key]) { radios[i].checked=true; radios[i].dispatchEvent(new Event('change')); }
+          }
+        } else if (key.indexOf('check_')===0) {
+          var cName = key.substring(6);
+          var vals = data[key];
+          for (var j=0;j<vals.length;j++) {
+            var cb = document.querySelector('input[name="'+cName+'"][value="'+vals[j]+'"]');
+            if (cb) cb.checked=true;
+          }
+        } else if (key.indexOf('field_')===0) {
+          var id = key.substring(6);
+          var el = document.getElementById(id);
+          if (el) el.value=data[key];
+        }
+      });
+      if (data._priorities) {
+        priorities = data._priorities;
+        for (var i=0;i<priorities.length;i++) {
+          var tag = document.querySelector('.priority-tag[data-value="'+priorities[i]+'"]');
+          if (tag) tag.classList.add('selected');
+        }
+      }
+      if (data._isArmenian!==null&&data._isArmenian!==undefined) isArmenian=data._isArmenian;
+      return Math.max(0, Math.min(Number(data._screen) || 0, TOTAL_STEPS));
+    } catch(e){}
+    return 0;
+  }
+
+  document.addEventListener('change', function(event) {
+    if (event.target.matches('input[type="radio"], input[type="checkbox"]')) celebrateAnswer(event.target);
+    saveProgress();
+  });
+
+  var saveTimer = null;
+  document.addEventListener('input', function() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveProgress, 250);
+  });
+
+  window.addEventListener('resize', function() {
+    fitActiveScreen(getCurrentCard());
+  });
+
+  // Expose
+  window.nextScreen=nextScreen;
+  window.prevScreen=prevScreen;
+  window.toggleArmenianDocs=toggleArmenianDocs;
+  window.toggleSubField=toggleSubField;
+  window.toggleHousingType=toggleHousingType;
+  window.setMessenger=setMessenger;
+  window.selectBudget=selectBudget;
+  window.selectRooms=selectRooms;
+  window.togglePriority=togglePriority;
+  window.signForm=signForm;
+  window.checkSubmit=checkSubmit;
+  window.submitForm=submitForm;
+  window.resetForm=resetForm;
+
+  // Init
+  wrapStepCards();
+  var restoredScreen = loadProgress();
+  showScreen(restoredScreen);
+  if (restoredScreen > 0) showToast('Ваши предыдущие ответы сохранены — можно продолжать.', 'success', 'С возвращением!', '👋');
+})();
+</script>
+</body>
+</html>
