@@ -1895,11 +1895,6 @@
     <div class="success-icon">🎉</div>
     <h2 class="success-title">Анкета отправлена!</h2>
     <p class="success-text">Спасибо! Наши эксперты уже анализируют ваши ответы и подготовят персональный план легализации.</p>
-    <div class="info-box">⏱️ <b>Свяжемся с вами в течение 24 часов</b><br>👔 Менеджеры: Ксения или Овик<br>📞 Через ваш предпочтительный мессенджер</div>
-    <div class="contact-buttons">
-      <a href="https://t.me/" target="_blank" rel="noopener" class="contact-btn telegram" id="tgLink">📱 Написать в Telegram</a>
-      <a href="https://wa.me/" target="_blank" rel="noopener" class="contact-btn whatsapp" id="waLink">💬 Написать в WhatsApp</a>
-    </div>
     <div class="btn-row">
       <button type="button" class="btn btn-primary" onclick="resetForm()">Заполнить ещё одну анкету</button>
     </div>
@@ -2356,9 +2351,6 @@
   }
 
   function submitForm() {
-    var message = encodeURIComponent('Здравствуйте! Я заполнил(а) анкету INTEGRA по легализации в Армении.');
-    document.getElementById('tgLink').href='https://t.me/share/url?url=&text='+message;
-    document.getElementById('waLink').href='https://wa.me/?text='+message;
     showScreen(screens.length-1);
     launchConfetti();
     showToast('Спасибо! Персональный план уже готовится.', 'success', 'Анкета отправлена!', '🎉');
