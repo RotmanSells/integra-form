@@ -2248,18 +2248,15 @@
   function toggleArmenianDocs(val) {
     isArmenian = val;
     document.getElementById('armenianDocsBlock').style.display = val?'block':'none';
-    refreshQuestionFlow(false);
   }
 
   function toggleSubField(id, show) {
     document.getElementById(id).classList.toggle('visible', show);
-    refreshQuestionFlow(false);
   }
 
   function toggleHousingType(type) {
     document.getElementById('budgetBuyBlock').style.display = (type==='buy')?'block':'none';
     document.getElementById('budgetRentBlock').style.display = (type==='rent')?'block':'none';
-    refreshQuestionFlow(false);
   }
 
   function setMessenger(btn, type) {
@@ -2306,8 +2303,7 @@
   for (var i=0;i<childRadios.length;i++) {
     childRadios[i].addEventListener('change', function() {
       var show = this.value==='SCHOOL'||this.value==='KINDER';
-        document.getElementById('languageBlock').style.display = show?'':'none';
-      refreshQuestionFlow(false);
+      document.getElementById('languageBlock').style.display = show?'':'none';
     });
   }
 
