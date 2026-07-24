@@ -2359,10 +2359,11 @@
 
   function submitForm() {
     var data = collectFormData();
-    sendToEmail(data);
-    showScreen(screens.length-1);
-    launchConfetti();
-    showToast('Спасибо! Персональный план уже готовится.', 'success', 'Анкета отправлена!', '🎉');
+    sendToEmail(data, function() {
+      showScreen(screens.length-1);
+      launchConfetti();
+      showToast('Спасибо! Персональный план уже готовится.', 'success', 'Анкета отправлена!', '🎉');
+    });
   }
 
   function collectFormData() {
@@ -2489,32 +2490,28 @@
     return lines.join('\n');
   }
 
-  function sendToEmail(text) {
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://formsubmit.co/KillerSapp22@yandex.ru';
-    form.target = 'fs_frame';
-    form.style.display = 'none';
-    function add(name, value) {
-      var el = document.createElement('input');
-      el.type = 'hidden';
-      el.name = name;
-      el.value = value;
-      form.appendChild(el);
-    }
-    add('_captcha', 'false');
-    add('_subject', '📋 Новая анкета INTEGRA');
-    add('message', text);
-    var iframe = document.createElement('iframe');
-    iframe.name = 'fs_frame';
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-    document.body.appendChild(form);
-    form.submit();
-    setTimeout(function() {
-      document.body.removeChild(form);
-      document.body.removeChild(iframe);
-    }, 5000);
+  var WEB3FORMS_KEY = 'f1f80d6f-c5a5-486c-9cfa-dd8ba8a81e2e';
+
+  function sendToEmail(text, onSuccess) {
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: 'Новая анкета INTEGRA',
+        from_name: 'INTEGRA Form',
+        email: 'KillerSapp22@yandex.ru',
+        message: text
+      })
+    }).then(function(r) { return r.json(); }).then(function(d) {
+      if (d.success) {
+        if (onSuccess) onSuccess();
+      } else {
+        alert('Ошибка отправки: ' + (d.message || 'Попробуйте ещё раз'));
+      }
+    }).catch(function() {
+      alert('Ошибка сети. Проверьте интернет и попробуйте ещё раз.');
+    });
   }
 
   function resetForm() {
