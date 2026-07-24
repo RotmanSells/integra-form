@@ -2397,8 +2397,9 @@
     var arm = radio('armenian');
     lines.push('• Есть корни: ' + (arm === 'YES' ? '✅ Да' : '❌ Нет'));
     if (arm === 'YES') {
+      var docsMap = {birth_self:'Моё свидетельство о рождении',birth_parent:'Свидетельство о рождении отца/матери',birth_grand:'Свидетельство дедушки/бабушки',baptism:'Свидетельство о крещении (ААЦ)',other:'Иные документы'};
       var docs = checks('docs');
-      if (docs) lines.push('• Документы: ' + docs);
+      if (docs) lines.push('• Документы: ' + docs.split(', ').map(function(d){return docsMap[d]||d;}).join(', '));
       var live = radio('live_armenia');
       lines.push('• Проживание: ' + (live === 'YES' ? '🏡 С пропиской' : '📄 Без прописки (спец. статус)'));
     }
@@ -2439,8 +2440,9 @@
     lines.push('• Вариант: ' + (housMap[hous] || hous));
     if (hous === 'BUY') {
       lines.push('• Бюджет: $' + val('buyBudget'));
+      var distMap = {center:'Центр',nork:'Норк Мараш',arabkir:'Арабкир',davtashen:'Давташен',any:'Любой'};
       var dist = checks('districts');
-      if (dist) lines.push('• Районы: ' + dist);
+      if (dist) lines.push('• Районы: ' + dist.split(', ').map(function(d){return distMap[d]||d;}).join(', '));
       lines.push('• Комнат: ' + val('roomsCount'));
       if (document.getElementById('needParking').checked) lines.push('• Парковка ✅');
       if (document.getElementById('needFurnished').checked) lines.push('• Мебель ✅');
@@ -2476,8 +2478,9 @@
 
     lines.push('');
     lines.push('🎁 Дополнительно:');
+    var svcMap = {bank:'🏦 Банковский счёт',car:'🚗 Автомобиль',sim:'📱 SIM-карта',medical:'🏥 Врач/страховка',moving:'📦 Перевозка',language:'🎓 Курсы языка',community:'🤝 Комьюнити'};
     var svc = checks('services');
-    if (svc) lines.push('• Услуги: ' + svc);
+    if (svc) lines.push('• Услуги: ' + svc.split(', ').map(function(s){return svcMap[s]||s;}).join(', '));
     var src = radio('source');
     var srcMap = {friends: '👥 Друзья', social: '📱 Соцсети', google: '🔍 Поиск', forum: '💬 Форумы', other: '📌 Другое'};
     lines.push('• Откуда узнал: ' + (srcMap[src] || src));
