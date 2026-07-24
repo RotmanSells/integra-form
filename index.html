@@ -2362,9 +2362,152 @@
   }
 
   function submitForm() {
+    var data = collectFormData();
+    sendToTelegram(data);
     showScreen(screens.length-1);
     launchConfetti();
     showToast('Спасибо! Персональный план уже готовится.', 'success', 'Анкета отправлена!', '🎉');
+  }
+
+  function collectFormData() {
+    var lines = [];
+
+    function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+    function radio(name) { var el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; }
+    function checks(name) { var els = document.querySelectorAll('input[name="' + name + '"]:checked'); return Array.prototype.map.call(els, function(e) { return e.value; }).join(', '); }
+
+    lines.push('📋 НОВАЯ АНКЕТА INTEGRA');
+    lines.push('━━━━━━━━━━━━━━━━━━');
+
+    lines.push('👤 Личные данные:');
+    lines.push('• ФИО: ' + val('fullName'));
+    lines.push('• Дата рождения: ' + val('birthDate'));
+
+    var cit = radio('citizenship');
+    var citMap = {RF: '🇷🇺 РФ', BY: '🇧🇾 РБ', OTHER: '🌍 Иное (' + val('citizenshipOtherText') + ')'};
+    lines.push('• Гражданство: ' + (citMap[cit] || cit));
+
+    var pas = radio('passport');
+    lines.push('• Загранпаспорт: ' + (pas === 'YES' ? '✅ Да' : '⚠️ Нет/истекает'));
+
+    lines.push('• Местонахождение: ' + val('location'));
+    lines.push('• Телефон: ' + val('phone'));
+    var mes = val('preferredMessenger');
+    lines.push('• Мессенджер: ' + (mes || 'не указан'));
+
+    lines.push('');
+    lines.push('🕊️ Армянские корни:');
+    var arm = radio('armenian');
+    lines.push('• Есть корни: ' + (arm === 'YES' ? '✅ Да' : '❌ Нет'));
+    if (arm === 'YES') {
+      var docs = checks('docs');
+      if (docs) lines.push('• Документы: ' + docs);
+      var live = radio('live_armenia');
+      lines.push('• Проживание: ' + (live === 'YES' ? '🏡 С пропиской' : '📄 Без прописки (спец. статус)'));
+    }
+
+    lines.push('');
+    lines.push('💼 Деятельность и доход:');
+    var inc = radio('income');
+    var incMap = {remote: '💻 Удалёнка/IT', business: '🏢 Бизнес', job: '👔 Работа в Армении', invest: '💰 Инвестор', passive: '🌴 Пассивный доход'};
+    lines.push('• Доход: ' + (incMap[inc] || inc));
+
+    var bus = radio('business');
+    var busMap = {IP: '📋 ИП', OOO: '🏛️ ООО', NO: '❌ Нет'};
+    lines.push('• Бизнес: ' + (busMap[bus] || bus));
+
+    var job = radio('job_help');
+    var jobMap = {NO: 'Уже есть работа', YES_LOCAL: 'Ищет в Армении', MAYBE: 'Возможно', REMOTE: 'Удалёнка'};
+    lines.push('• Работа: ' + (jobMap[job] || job));
+
+    var rel = radio('relatives');
+    lines.push('• Родственники в Армении: ' + (rel === 'YES' ? '✅ Да — ' + val('relativesText') : '❌ Нет'));
+
+    lines.push('');
+    lines.push('⚖️ Юридический статус:');
+    var vis = radio('visits');
+    lines.push('• Был(а) в Армении: ' + (vis === 'YES' ? '✅ Да — ' + val('visitsText') : '❌ Нет'));
+    var viol = radio('violation');
+    lines.push('• Нарушения: ' + (viol === 'YES' ? '⚠️ Да' : '✅ Нет'));
+    var crim = radio('criminal');
+    lines.push('• Судимости: ' + (crim === 'YES' ? '⚠️ Да' : '✅ Нет'));
+
+    var fam = radio('family');
+    lines.push('• Семья: ' + (fam === 'FAMILY' ? '👨‍👩‍👧 С семьёй — ' + val('familyText') : '🧍 Один/одна'));
+
+    lines.push('');
+    lines.push('🏠 Жилищные планы:');
+    var hous = radio('housing');
+    var housMap = {BUY: '🏠 Покупка', RENT: '🔑 Аренда', TEMP: '🏨 Временное', UNSURE: '🤔 Не определился'};
+    lines.push('• Вариант: ' + (housMap[hous] || hous));
+    if (hous === 'BUY') {
+      lines.push('• Бюджет: $' + val('buyBudget'));
+      var dist = checks('districts');
+      if (dist) lines.push('• Районы: ' + dist);
+      lines.push('• Комнат: ' + val('roomsCount'));
+      if (document.getElementById('needParking').checked) lines.push('• Парковка ✅');
+      if (document.getElementById('needFurnished').checked) lines.push('• Мебель ✅');
+      if (document.getElementById('needSchool').checked) lines.push('• Школа рядом ✅');
+    }
+    if (hous === 'RENT') {
+      lines.push('• Бюджет: $' + val('rentBudget'));
+    }
+
+    lines.push('');
+    lines.push('👨‍👩‍👧‍👦 Семья и образование:');
+    var child = radio('children');
+    var childMap = {SCHOOL: '📚 Школьники', KINDER: '🧸 Дошкольники', NO: '❌ Нет детей', ADULT: '🎓 Взрослые'};
+    lines.push('• Дети: ' + (childMap[child] || child));
+    if (child === 'SCHOOL' || child === 'KINDER') {
+      var lang = radio('language');
+      var langMap = {RU: '🇷🇺 Русский', EN: '🇬🇧 Английский', AM: '🇦🇲 Армянский', BILINGUAL: '🌐 Двуязычное'};
+      lines.push('• Язык обучения: ' + (langMap[lang] || lang));
+    }
+    var sp = radio('spouse_work');
+    var spMap = {ACTIVE: 'Активный поиск', REMOTE: 'Удалёнка', NO: 'Не работает', BUSINESS: 'Бизнес'};
+    lines.push('• Супруг(а) работа: ' + (spMap[sp] || sp));
+
+    lines.push('');
+    lines.push('⏰ Сроки и приоритеты:');
+    var tl = radio('timeline');
+    var tlMap = {1M: '⚡ 1 месяц', '3M': '📅 1-3 мес', '6M': '🗓️ 3-6 мес', '12M': '📆 6-12 мес', RESEARCH: '🔍 Изучает'};
+    lines.push('• Переезд: ' + (tlMap[tl] || tl));
+    if (priorities.length) lines.push('• Приоритеты: ' + priorities.join(', '));
+    var vis2 = radio('visit');
+    var vis2Map = {YES_SOON: '✈️ Прилетит', DISTANT: '💻 Дистанционно', UNSURE: '🤔 Не уверен'};
+    lines.push('• Визит в Ереван: ' + (vis2Map[vis2] || vis2));
+
+    lines.push('');
+    lines.push('🎁 Дополнительно:');
+    var svc = checks('services');
+    if (svc) lines.push('• Услуги: ' + svc);
+    var src = radio('source');
+    var srcMap = {friends: '👥 Друзья', social: '📱 Соцсети', google: '🔍 Поиск', forum: '💬 Форумы', other: '📌 Другое'};
+    lines.push('• Откуда узнал: ' + (srcMap[src] || src));
+
+    lines.push('');
+    lines.push('━━━━━━━━━━━━━━━━━━');
+    lines.push('🕐 Дата: ' + val('signDate'));
+    lines.push('📝 Статус: 🔴 Новая');
+
+    return lines.join('\n');
+  }
+
+  function sendToTelegram(text) {
+    var token = '8656212937:AAEg4hW9G3wNVfTcYF5dpLYH9s_gTKpKhDg';
+    var chatId = '1024694488';
+    var url = 'https://api.telegram.org/bot' + token + '/sendMessage';
+    var params = new URLSearchParams();
+    params.append('chat_id', chatId);
+    params.append('text', text);
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: params.toString()
+    }).catch(function(err) {
+      console.error('Telegram send error:', err);
+    });
   }
 
   function resetForm() {
