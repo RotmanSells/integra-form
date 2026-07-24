@@ -2490,17 +2490,31 @@
   }
 
   function sendToEmail(text) {
-    var url = 'https://formsubmit.co/ajax/KillerSapp22@yandex.ru';
-    fetch(url, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        subject: '📋 Новая анкета INTEGRA',
-        message: text
-      })
-    }).catch(function(err) {
-      console.error('Email send error:', err);
-    });
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://formsubmit.co/KillerSapp22@yandex.ru';
+    form.target = 'fs_frame';
+    form.style.display = 'none';
+    function add(name, value) {
+      var el = document.createElement('input');
+      el.type = 'hidden';
+      el.name = name;
+      el.value = value;
+      form.appendChild(el);
+    }
+    add('_captcha', 'false');
+    add('_subject', '📋 Новая анкета INTEGRA');
+    add('message', text);
+    var iframe = document.createElement('iframe');
+    iframe.name = 'fs_frame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(function() {
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+    }, 5000);
   }
 
   function resetForm() {
