@@ -2490,17 +2490,15 @@
     return lines.join('\n');
   }
 
-  var WEB3FORMS_KEY = 'f1f80d6f-c5a5-486c-9cfa-dd8ba8a81e2e';
-
   function sendToEmail(text, onSuccess) {
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
+        access_key: 'f1f80d6f-c5a5-486c-9cfa-dd8ba8a81e2e',
         subject: 'Новая анкета INTEGRA',
         from_name: 'INTEGRA Form',
-        email: 'KillerSapp22@yandex.ru',
+        email: 'alina.lav.bi@gmail.com',
         message: text
       })
     }).then(function(r) { return r.json(); }).then(function(d) {
