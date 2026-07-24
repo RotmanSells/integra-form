@@ -2470,7 +2470,7 @@
     lines.push('');
     lines.push('⏰ Сроки и приоритеты:');
     var tl = radio('timeline');
-    var tlMap = {1M: '⚡ 1 месяц', '3M': '📅 1-3 мес', '6M': '🗓️ 3-6 мес', '12M': '📆 6-12 мес', RESEARCH: '🔍 Изучает'};
+    var tlMap = {'1M': '⚡ 1 месяц', '3M': '📅 1-3 мес', '6M': '🗓️ 3-6 мес', '12M': '📆 6-12 мес', RESEARCH: '🔍 Изучает'};
     lines.push('• Переезд: ' + (tlMap[tl] || tl));
     if (priorities.length) lines.push('• Приоритеты: ' + priorities.join(', '));
     var vis2 = radio('visit');
