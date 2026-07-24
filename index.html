@@ -1763,7 +1763,7 @@
         <label class="option"><input type="radio" name="children" value="ADULT"><span class="option-label">🎓 Дети взрослые, не актуально</span></label>
       </div>
     </div>
-    <div class="field" id="languageBlock" style="display:none;">
+    <div class="field" id="languageBlock">
       <label class="field-label"><span class="num">2</span>Язык обучения для детей</label>
       <div class="options">
         <label class="option"><input type="radio" name="language" value="RU"><span class="option-label">🇷🇺 Русский</span></label>
@@ -2306,7 +2306,7 @@
   for (var i=0;i<childRadios.length;i++) {
     childRadios[i].addEventListener('change', function() {
       var show = this.value==='SCHOOL'||this.value==='KINDER';
-      document.getElementById('languageBlock').style.display = show?'block':'none';
+        document.getElementById('languageBlock').style.display = show?'':'none';
       refreshQuestionFlow(false);
     });
   }
