@@ -1903,7 +1903,6 @@
 
 </div>
 
-<div id="sendLog" style="position:fixed;bottom:0;left:0;right:0;max-height:40vh;overflow-y:auto;background:#1a1a2e;color:#0f0;font-family:monospace;font-size:11px;padding:8px 12px;z-index:9999;display:none;border-top:2px solid #0f0;"></div>
 <script>
 (function() {
   'use strict';
@@ -2491,21 +2490,7 @@
     return lines.join('\n');
   }
 
-  function logSend(msg, color) {
-    var el = document.getElementById('sendLog');
-    el.style.display = 'block';
-    var t = document.createElement('div');
-    t.style.color = color || '#0f0';
-    var now = new Date();
-    var ts = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ':' + now.getSeconds().toString().padStart(2,'0');
-    t.textContent = '[' + ts + '] ' + msg;
-    el.appendChild(t);
-    el.scrollTop = el.scrollHeight;
-  }
-
   function sendToEmail(text, onSuccess) {
-    logSend('Отправка формы...', '#ff0');
-    logSend('Длина сообщения: ' + text.length + ' символов', '#888');
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -2517,18 +2502,14 @@
         message: text
       })
     }).then(function(r) {
-      logSend('HTTP статус: ' + r.status + ' ' + r.statusText, r.ok ? '#0f0' : '#f00');
       return r.json();
     }).then(function(d) {
       if (d.success) {
-        logSend('✅ УСПЕШНО! Form submitted. ID: ' + (d.message || ''), '#0f0');
         if (onSuccess) onSuccess();
       } else {
-        logSend('❌ ОШИБКА: ' + (d.message || JSON.stringify(d)), '#f00');
         alert('Ошибка: ' + (d.message || 'Попробуйте ещё раз'));
       }
-    }).catch(function(err) {
-      logSend('❌ СЕТЕВАЯ ОШИБКА: ' + err.message, '#f00');
+    }).catch(function() {
       alert('Ошибка сети. Проверьте интернет.');
     });
   }
